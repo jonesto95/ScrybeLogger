@@ -1,0 +1,22 @@
+ScrybeLogger:
+  TagFilters:
+    A:
+      LoggingLevel: INFO
+      Loggers:
+      - LoggerType: Console
+        LoggingLevel: ERROR
+        LogLinePrefix: '[{D}] [{n}]'
+      - LoggerType: File
+        LogLinePrefix: '[{D}] [{n}]'
+        LogDirectory: ./Logs
+        FileName: Log_{d}.log
+      - LoggerType: EventViewer
+        Disabled: true
+  ClassFilters:
+    ScrybeTest.*:
+      LoggingLevel: ERROR
+      Loggers:
+      - LoggerType: Console
+        LoggingLevel: INFO
+      - LoggerType: Console
+        LoggingLevel: FATAL
