@@ -82,5 +82,32 @@ namespace ScrybeLogger
                 logger.LogForce(message);
             }
         }
+
+
+        public void LogMethodStart(params object[] parameters)
+        {
+            foreach (var logger in Loggers)
+            {
+                logger.LogMethodStart(parameters);
+            }
+        }
+
+
+        public void LogMethodEnd()
+        {
+            foreach (var logger in Loggers)
+            {
+                logger.LogMethodEnd();
+            }
+        }
+
+
+        public void LogMethodEnd(object returnObject)
+        {
+            foreach (var logger in Loggers)
+            {
+                logger.LogMethodEnd(returnObject);
+            }
+        }
     }
 }

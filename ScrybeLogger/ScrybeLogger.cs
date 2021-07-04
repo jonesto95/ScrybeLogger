@@ -164,6 +164,84 @@ namespace ScrybeLogger
             }
         }
 
+
+        public void LogMethodStart(params object[] parameters)
+        {
+            if(LoggingLevel >= ScrybeLoggingLevel.TRACE)
+            {
+                string callingMethod = GetCallingMethod();
+                string message = $"Starting method {callingMethod}";
+                LogTrace(message);
+                if(parameters.Length > 0)
+                {
+                    string paramList = "Parameters:";
+                    foreach(var param in parameters)
+                    {
+                        if(param == null)
+                        {
+                            paramList += $" null,";
+                        }
+                        else if(param is string paramString)
+                        {
+                            paramList += $" \"{paramString}\",";
+                        }
+                        else
+                        {
+                            paramList += $" {param},";
+                        }
+                    }
+                    paramList = paramList.Substring(0, paramList.Length - 1);
+                    LogTrace(paramList);
+                }
+            }
+        }
+
+
+        public void LogMethodEnd()
+        {
+            if(LoggingLevel >= ScrybeLoggingLevel.TRACE)
+            {
+                string callingMethod = GetCallingMethod();
+                string message = $"Finishing method {callingMethod}";
+                LogTrace(message);
+            }
+        }
+
+
+        public void LogMethodEnd(object returnObject)
+        {
+            if (LoggingLevel >= ScrybeLoggingLevel.TRACE)
+            {
+                string callingMethod = GetCallingMethod();
+                string message = $"Finishing method {callingMethod}, returning ";
+                if(returnObject is string returnString)
+                {
+                    message += $"\"{returnString}\"";
+                }
+                else
+                {
+                    message += $"{returnObject}";
+                }
+                LogTrace(message);
+            }
+        }
+
+
+        private string GetCallingMethod()
+        {
+            string[] stackTrace = Environment.StackTrace.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            string methodToSearch = $"ScrybeLogger.ScrybeLogger.GetCallingMethod()";
+            int i = 0;
+            while(!stackTrace[i].Contains(methodToSearch))
+            {
+                i++;
+            }
+            string callMethod = stackTrace[i+3];
+            int methodClose = callMethod.IndexOf(")");
+            callMethod = callMethod.Substring(6, methodClose - 5);
+            return callMethod;
+        }
+
         #endregion
 
 

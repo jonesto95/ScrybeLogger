@@ -14,9 +14,6 @@ ScrybeLogger:
         Disabled: true
   ClassFilters:
     ScrybeTest.*:
-      LoggingLevel: ERROR
+      LoggingLevel: ALL
       Loggers:
       - LoggerType: Console
-        LoggingLevel: INFO
-      - LoggerType: Console
-        LoggingLevel: FATAL
