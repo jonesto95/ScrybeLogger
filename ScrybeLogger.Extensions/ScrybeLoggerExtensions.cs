@@ -36,6 +36,11 @@ namespace ScrybeLogger.Extensions
                     paramList = paramList.Substring(0, paramList.Length - 1);
                     scrybe.LogDebug(paramList);
                 }
+                int paramCount = GetParameterCountInMethod(callingMethod);
+                if(parameters.Length != paramCount)
+                {
+                    scrybe.LogWarn($"The method accepts {paramCount} parameters, but only {parameters.Length} were specified when logging");
+                }
             }
         }
 
@@ -104,6 +109,19 @@ namespace ScrybeLogger.Extensions
             int methodClose = callMethod.IndexOf(")");
             callMethod = callMethod.Substring(6, methodClose - 5);
             return callMethod;
+        }
+
+
+        private static int GetParameterCountInMethod(string callingMethod)
+        {
+            int openParentheses = callingMethod.IndexOf('(');
+            callingMethod = callingMethod.Substring(openParentheses);
+            if (string.Equals(callingMethod, "()"))
+            {
+                return 0;
+            }
+            string[] parameters = callingMethod.Split(',');
+            return parameters.Length;
         }
 
         #endregion

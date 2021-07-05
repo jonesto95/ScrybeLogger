@@ -17,10 +17,12 @@ namespace ScrybeTest
             scrybe.LogFatal("Fat");
             scrybe.LogVariableValue(nameof(ggg), ggg);
             scrybe.LogMethodEnd(5);
+            Test(new Dictionary<int, int>(), string.Empty);
+            System.Console.Read();
         }
 
 
-        private static void Test(Dictionary<int, int> values)
+        private static void Test(Dictionary<int, int> values, string ga)
         {
             scrybe.LogMethodStart(values);
         }
