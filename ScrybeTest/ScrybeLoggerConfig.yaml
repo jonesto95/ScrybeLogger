@@ -17,3 +17,4 @@ ScrybeLogger:
       LoggingLevel: ALL
       Loggers:
       - LoggerType: Console
+        LogLinePrefix: "[{H}:{m}:{s}.{f}] [{n}]"

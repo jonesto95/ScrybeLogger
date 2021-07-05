@@ -11,13 +11,5 @@ namespace ScrybeLogger
         {
             Debug.WriteLine(message);
         }
-
-
-        public override object ProcessMessage(object message)
-        {
-            string prefix = ProcessMonikers(LogLinePrefix);
-            string messageString = $"{prefix} {message}";
-            return messageString;
-        }
     }
 }

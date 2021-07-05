@@ -9,5 +9,23 @@
         {
             LogLinePrefix = logLinePrefix;
         }
+
+
+        public override object ProcessMessage(object message)
+        {
+            return AddPrefixToMessage(message);
+        }
+
+
+        public string AddPrefixToMessage(object message)
+        {
+            string messageString = $"{message}";
+            string prefix = ProcessMonikers(LogLinePrefix);
+            if(prefix.Length > 0)
+            {
+                messageString = $"{prefix} {message}";
+            }
+            return messageString;
+        }
     }
 }
