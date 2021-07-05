@@ -131,6 +131,17 @@ namespace ScrybeLogger
             LogAtLevel(message, ScrybeLoggingLevel.ERROR);
         }
 
+
+        /// <summary>
+        /// Log a message and exception at the ERROR level
+        /// </summary>
+        /// <param name="message">The message to log</param>
+        public void LogError(object message, Exception exception)
+        {
+            LogAtLevel(message, ScrybeLoggingLevel.ERROR);
+            LogException(exception, ScrybeLoggingLevel.ERROR);
+        }
+
         /// <summary>
         /// Log a message at the FATAL level
         /// </summary>
@@ -138,6 +149,16 @@ namespace ScrybeLogger
         public void LogFatal(object message)
         {
             LogAtLevel(message, ScrybeLoggingLevel.FATAL);
+        }
+
+        /// <summary>
+        /// Log a message and exception at the FATAL level
+        /// </summary>
+        /// <param name="message">The message to log</param>
+        public void LogFatal(object message, Exception exception)
+        {
+            LogAtLevel(message, ScrybeLoggingLevel.FATAL);
+            LogException(exception, ScrybeLoggingLevel.FATAL);
         }
 
         /// <summary>
@@ -164,6 +185,7 @@ namespace ScrybeLogger
             }
         }
 
+        #region LogMethod methods
 
         public void LogMethodStart(params object[] parameters)
         {
@@ -227,6 +249,17 @@ namespace ScrybeLogger
         }
 
 
+        public void LogErrorInMethod(Exception exception)
+        {
+            string callingMethod = GetCallingMethod();
+            string message = $"Error thrown in {callingMethod}";
+            LogError(message);
+            LogException(exception, ScrybeLoggingLevel.ERROR);
+        }
+
+        #endregion
+
+
         private string GetCallingMethod()
         {
             string[] stackTrace = Environment.StackTrace.Split(new string[] { "\r\n" }, StringSplitOptions.None);
@@ -240,6 +273,23 @@ namespace ScrybeLogger
             int methodClose = callMethod.IndexOf(")");
             callMethod = callMethod.Substring(6, methodClose - 5);
             return callMethod;
+        }
+
+
+        private void LogException(Exception exception, decimal loggingLevel)
+        {
+            if(LoggingLevel >= loggingLevel)
+            {
+                LogAtLevel(exception.Message, loggingLevel);
+                LogAtLevel(exception.StackTrace, loggingLevel);
+                var innerException = exception.InnerException;
+                while (innerException != null)
+                {
+                    LogAtLevel(innerException.Message, loggingLevel);
+                    LogAtLevel(innerException.StackTrace, loggingLevel);
+                    innerException = innerException.InnerException;
+                }
+            }
         }
 
         #endregion

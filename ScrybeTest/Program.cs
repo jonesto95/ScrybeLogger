@@ -6,7 +6,7 @@ namespace ScrybeTest
     {
         static void Main(string[] args)
         {
-            var s = ScrybeBuilder.BuildScrybe<ScrybeTagTester>();
+            var s = new Scrybe<ScrybeTagTester>();
             s.LogMethodStart(args);
             s.LogInfo("Info");
             s.LogFatal("Fat");

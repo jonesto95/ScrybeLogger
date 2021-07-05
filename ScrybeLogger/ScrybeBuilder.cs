@@ -7,26 +7,25 @@ namespace ScrybeLogger
 {
     public static class ScrybeBuilder
     {
-        public static Scrybe BuildScrybe<T>()
+        public static ScrybeLogger[] GetScrybeLoggers<T>()
         {
-            Scrybe result = new Scrybe();
             Type type = typeof(T);
             string scrybeTag = GetScrybeTagsFromType(type);
+            var loggers = new ScrybeLogger[0];
             if(!string.IsNullOrEmpty(scrybeTag))
             {
-                result = BuildScrybeByTags(scrybeTag);
+                loggers = GetScrybeLoggersByTags(scrybeTag);
             }
             else
             {
-                result = BuildScrybeByClassName(type.FullName);
+                loggers = GetScrybeLoggersByClassName(type.FullName);
             }
-            return result;
+            return loggers;
         }
 
 
-        private static Scrybe BuildScrybeByTags(string scrybeTag)
+        private static ScrybeLogger[] GetScrybeLoggersByTags(string scrybeTag)
         {
-            var result = new Scrybe();
             List<ScrybeLogger>  loggerList = new List<ScrybeLogger>();
             string[] scrybeTags = scrybeTag.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             var configuredTags = ScrybeLoggerConfiguration.GetTagFilters();
@@ -43,14 +42,12 @@ namespace ScrybeLogger
                     }
                 }
             }
-            result.Loggers = loggerList.ToArray();
-            return result;
+            return loggerList.ToArray();
         }
 
 
-        private static Scrybe BuildScrybeByClassName(string className)
+        private static ScrybeLogger[] GetScrybeLoggersByClassName(string className)
         {
-            var result = new Scrybe();
             List<ScrybeLogger> loggerList = new List<ScrybeLogger>();
             className = className.ToUpper();
             var configuredClasses = ScrybeLoggerConfiguration.GetClassFilters();
@@ -71,8 +68,7 @@ namespace ScrybeLogger
                     }
                 }
             }
-            result.Loggers = loggerList.ToArray();
-            return result;
+            return loggerList.ToArray();
         }
 
 

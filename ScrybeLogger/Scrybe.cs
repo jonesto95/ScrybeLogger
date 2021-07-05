@@ -1,4 +1,5 @@
 ﻿using System;
+using ScrybeLogger.Interface;
 
 namespace ScrybeLogger
 {
@@ -13,11 +14,11 @@ namespace ScrybeLogger
     }
 
 
-    public class Scrybe
+    public class Scrybe<T> : IScrybe<T>
     {
-        internal Scrybe() { }
+        public Scrybe() { }
 
-        internal ScrybeLogger[] Loggers { get; set; }
+        internal readonly ScrybeLogger[] Loggers = ScrybeBuilder.GetScrybeLoggers<T>();
 
         public void LogTrace(object message)
         {
@@ -83,7 +84,6 @@ namespace ScrybeLogger
             }
         }
 
-
         public void LogMethodStart(params object[] parameters)
         {
             foreach (var logger in Loggers)
@@ -91,7 +91,6 @@ namespace ScrybeLogger
                 logger.LogMethodStart(parameters);
             }
         }
-
 
         public void LogMethodEnd()
         {
@@ -101,12 +100,19 @@ namespace ScrybeLogger
             }
         }
 
-
         public void LogMethodEnd(object returnObject)
         {
             foreach (var logger in Loggers)
             {
                 logger.LogMethodEnd(returnObject);
+            }
+        }
+
+        public void LogErrorInMethod(Exception exception)
+        {
+            foreach (var logger in Loggers)
+            {
+                logger.LogErrorInMethod(exception);
             }
         }
     }
