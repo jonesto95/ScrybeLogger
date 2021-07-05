@@ -77,6 +77,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ScrybeLogger.Extensions\ScrybeLogger.Extensions.csproj">
+      <Project>{9982108c-e784-4ade-9a75-9bb00fe28634}</Project>
+      <Name>ScrybeLogger.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScrybeLogger.Interface\ScrybeLogger.Interface.csproj">
+      <Project>{61ff652f-dbbe-4bd4-a630-ea140e9636bb}</Project>
+      <Name>ScrybeLogger.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScrybeLogger\ScrybeLogger.csproj">
       <Project>{8ae09126-aed6-4700-8553-946dfe1de5b6}</Project>
       <Name>ScrybeLogger</Name>

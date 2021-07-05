@@ -20,12 +20,21 @@ namespace ScrybeLogger
 
         internal readonly ScrybeLogger[] Loggers = ScrybeBuilder.GetScrybeLoggers<T>();
 
+        public bool IsTraceEnabled()
+        {
+            return IsLoggingLevelEnabled(ScrybeLoggingLevel.TRACE);
+        }
+
         public void LogTrace(object message)
         {
             foreach(var logger in Loggers)
             {
                 logger.LogTrace(message);
             }
+        }
+        public bool IsVerboseEnabled()
+        {
+            return IsLoggingLevelEnabled(ScrybeLoggingLevel.VERBOSE);
         }
 
         public void LogVerbose(object message)
@@ -34,6 +43,10 @@ namespace ScrybeLogger
             {
                 logger.LogVerbose(message);
             }
+        }
+        public bool IsDebugEnabled()
+        {
+            return IsLoggingLevelEnabled(ScrybeLoggingLevel.DEBUG);
         }
 
         public void LogDebug(object message)
@@ -44,12 +57,22 @@ namespace ScrybeLogger
             }
         }
 
+        public bool IsInfoEnabled()
+        {
+            return IsLoggingLevelEnabled(ScrybeLoggingLevel.INFO);
+        }
+
         public void LogInfo(object message)
         {
             foreach (var logger in Loggers)
             {
                 logger.LogInfo(message);
             }
+        }
+
+        public bool IsWarnEnabled()
+        {
+            return IsLoggingLevelEnabled(ScrybeLoggingLevel.WARN);
         }
 
         public void LogWarn(object message)
@@ -60,12 +83,30 @@ namespace ScrybeLogger
             }
         }
 
+        public bool IsErrorEnabled()
+        {
+            return IsLoggingLevelEnabled(ScrybeLoggingLevel.ERROR);
+        }
+
         public void LogError(object message)
         {
             foreach (var logger in Loggers)
             {
                 logger.LogError(message);
             }
+        }
+
+        public void LogError(object message, Exception exception)
+        {
+            foreach (var logger in Loggers)
+            {
+                logger.LogError(message, exception);
+            }
+        }
+
+        public bool IsFatalEnabled()
+        {
+            return IsLoggingLevelEnabled(ScrybeLoggingLevel.FATAL);
         }
 
         public void LogFatal(object message)
@@ -76,6 +117,11 @@ namespace ScrybeLogger
             }
         }
 
+        public bool IsForceEnabled()
+        {
+            return IsLoggingLevelEnabled(ScrybeLoggingLevel.FORCE);
+        }
+
         public void LogForce(object message)
         {
             foreach (var logger in Loggers)
@@ -84,36 +130,14 @@ namespace ScrybeLogger
             }
         }
 
-        public void LogMethodStart(params object[] parameters)
+        private bool IsLoggingLevelEnabled(decimal loggingLevel)
         {
             foreach (var logger in Loggers)
             {
-                logger.LogMethodStart(parameters);
+                if (logger.LoggingLevel >= loggingLevel)
+                    return true;
             }
-        }
-
-        public void LogMethodEnd()
-        {
-            foreach (var logger in Loggers)
-            {
-                logger.LogMethodEnd();
-            }
-        }
-
-        public void LogMethodEnd(object returnObject)
-        {
-            foreach (var logger in Loggers)
-            {
-                logger.LogMethodEnd(returnObject);
-            }
-        }
-
-        public void LogErrorInMethod(Exception exception)
-        {
-            foreach (var logger in Loggers)
-            {
-                logger.LogErrorInMethod(exception);
-            }
+            return false;
         }
     }
 }

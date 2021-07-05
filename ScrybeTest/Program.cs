@@ -1,16 +1,28 @@
 ﻿using ScrybeLogger;
+using ScrybeLogger.Interface;
+using ScrybeLogger.Extensions;
+using System.Collections.Generic;
 
 namespace ScrybeTest
 {
     class Program
     {
+        private static IScrybe<ScrybeTagTester> scrybe = new Scrybe<ScrybeTagTester>();
+        
         static void Main(string[] args)
         {
-            var s = new Scrybe<ScrybeTagTester>();
-            s.LogMethodStart(args);
-            s.LogInfo("Info");
-            s.LogFatal("Fat");
-            s.LogMethodEnd(5);
+            scrybe.LogMethodStart(args);
+            int ggg = 10;
+            scrybe.LogInfo("Info");
+            scrybe.LogFatal("Fat");
+            scrybe.LogVariableValue(nameof(ggg), ggg);
+            scrybe.LogMethodEnd(5);
+        }
+
+
+        private static void Test(Dictionary<int, int> values)
+        {
+            scrybe.LogMethodStart(values);
         }
     }
 
