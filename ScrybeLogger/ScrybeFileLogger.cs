@@ -9,6 +9,9 @@ namespace ScrybeLogger
         private string LoggingDirectory { get; set; }
 
 
+        private static object FileLoggerLock = new object();
+
+
         public ScrybeFileLogger(decimal loggingLevel, string logLinePrefix, string loggingDirectory, string fileName)
             : base(loggingLevel, logLinePrefix)
         {
@@ -37,7 +40,10 @@ namespace ScrybeLogger
             string directory = GetLoggingDirectory();
             string fileName = GetFileName();
             string filePath = Path.Combine(directory, fileName);
-            File.AppendAllLines(filePath, new string[] { message.ToString() });
+            lock (FileLoggerLock)
+            {
+                File.AppendAllLines(filePath, new string[] { message.ToString() });
+            }
         }
     }
 }
